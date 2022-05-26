@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 50px auto;
+}
+
+.score {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.playground {
+    margin-top: 20px;
+    width: 250px;
+}
+
+.playground ul {
+    list-style: none;
+}
+
+.playground ul > li > ul {
+    display: flex;
+    flex-direction: row;
+}
+.playground ul > li > ul > li {
+    width: 25px;
+    height: 25px;
+    border: 1px solid #ddd;
+}
+
+.tree {
+    background-color: #67323a;
+}
+.sq {
+    background-color: #67323a;
+}
+.line {
+    background-color: #67323a;
+}
