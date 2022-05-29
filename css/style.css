@@ -56,3 +56,25 @@
 .rl {
     background-color: hwb(204 0% 4%);
 }
+
+.gameText {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 32px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+}
+
+.gameText button {
+    color: #fff;
+    background-color: salmon;
+    border: none;
+    padding: 0.5rem 1rem;
+}
