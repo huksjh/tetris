@@ -36,11 +36,23 @@
 }
 
 .tree {
-    background-color: #67323a;
+    background-color: hsl(123, 80%, 35%);
 }
 .sq {
-    background-color: #67323a;
+    background-color: hsl(351, 61%, 48%);
 }
 .line {
-    background-color: #67323a;
+    background-color: hsl(234, 71%, 50%);
+}
+.lzee {
+    background-color: aqua;
+}
+.rzee {
+    background-color: #f71d00;
+}
+.ll {
+    background-color: hsl(36, 100%, 48%);
+}
+.rl {
+    background-color: hwb(204 0% 4%);
 }

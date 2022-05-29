@@ -10,16 +10,17 @@ let downInterval;
 let tempMovingItem;
 
 const movingItem = {
-    type: "tree",
+    type: "ll",
     direction: 0,
     top: 0,
-    left: 3,
+    left: 0,
 };
 
 init();
 function init() {
     tempMovingItem = { ...movingItem };
 
+    // 라인생성
     for (let i = 0; i < GAME_ROWS; i++) {
         prependNewLine();
     }
@@ -108,10 +109,13 @@ function seizeBlock() {
         moving.classList.remove("moving");
         moving.classList.add("seized");
     });
-    //generateNewBlock();
+    generateNewBlock();
 }
 
 function generateNewBlock() {
+    let blockArray = Object.entries(BLOCKS);
+    let rand_type = Math.floor(Math.random() * Object.entries(BLOCKS).length);
+    movingItem.type = blockArray[rand_type][0];
     movingItem.top = 0;
     movingItem.left = 3;
     tempMovingItem = { ...movingItem };
