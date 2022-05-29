@@ -36,7 +36,7 @@ const BLOCKS = {
             [1, 2],
         ],
     ],
-    // 사각형
+    // ㅁ
     sq: [
         [
             [0, 0],
@@ -125,60 +125,114 @@ function prependNewLine() {
 
 function renderBlocks(moveType = "") {
     const { type, direction, top, left } = tempMovingItem;
-
+    console.log(tempMovingItem);
     const movingBlocks = document.querySelectorAll(".moving");
     // 이동한 기록이 있는 객체 클래스 초기화
     movingBlocks.forEach((moving) => {
         moving.classList.remove(type, "moving");
     });
-    BLOCKS[type][direction].some((block) => {
+    //console.log(BLOCKS[type][direction].length);
+    /*for (let i = 0; i < BLOCKS[type][direction].length; i++) {
+        let block = BLOCKS[type][direction][i];
         const x = block[0] + left;
         const y = block[1] + top;
         const target = playground.childNodes[y] ? playground.childNodes[y].childNodes[0].childNodes[x] : null;
-        // 이동 변화 클래스 부여
         const isAvailable = checkEmpty(target);
         if (isAvailable) {
             target.classList.add(type, "moving");
         } else {
             tempMovingItem = { ...movingItem };
             setTimeout(() => {
+                console.log("setTimeout");
+                //renderBlocks();
+                if (moveType === "top") {
+                    seizeBlock();
+                }
+            }, 0);
+            //return true;
+            break;
+        }
+    }*/
+
+    BLOCKS[type][direction].some((block) => {
+        //console.log("block", block);
+        const x = block[0] + left;
+        const y = block[1] + top;
+        //console.log("playground.childNodes[y]", playground.childNodes[y]);
+        //console.log(playground.childNodes[y].childNodes);
+        const target = playground.childNodes[y] ? playground.childNodes[y].childNodes[0].childNodes[x] : null;
+        //console.log("target", target);
+
+        // 여백체크
+        const isAvailable = checkEmpty(target);
+        if (isAvailable) {
+            target.classList.add(type, "moving");
+        } else {
+            tempMovingItem = { ...movingItem };
+            setTimeout(() => {
+                console.log("setTimeout");
                 renderBlocks();
                 if (moveType === "top") {
-                    seizBlock();
+                    seizeBlock();
                 }
             }, 0);
             return true;
         }
     });
+
     movingItem.left = left;
     movingItem.top = top;
     movingItem.direction = direction;
 }
 
-function seizBlock() {}
+// 블럭 고정 css 부여
+function seizeBlock() {
+    const movingBlocks = document.querySelectorAll(".moving");
+    movingBlocks.forEach((moving) => {
+        moving.classList.remove("moving");
+        moving.classList.add("seized");
+    });
+    //generateNewBlock();
+}
 
+function generateNewBlock() {
+    movingItem.top = 0;
+    movingItem.left = 3;
+    tempMovingItem = { ...movingItem };
+    renderBlocks();
+}
+
+// 블럭검사 target 영역 검사해서 있으면 moving css 없으면 seized 부여 하기위한 검사
 function checkEmpty(target) {
-    if (!target) {
+    if (!target || target.classList.contains("seized")) {
         return false;
     }
     return true;
 }
 
+/**
+ * 블럭 이동 - 키보드 액션 감지
+ * @param {*} moveType left, top
+ * @param {*} amount 이동 +- 카운트
+ */
 function moveBlock(moveType, amount) {
     tempMovingItem[moveType] += amount;
+    // 블럭 새로고침
     renderBlocks(moveType);
 }
 
+// 키 상단버튼 모양 변경이벤트
 function changeDirection() {
     const direction = tempMovingItem.direction;
     direction === 3 ? (tempMovingItem.direction = 0) : (tempMovingItem.direction += 1);
 
+    // 블럭 새로고침
     renderBlocks();
 }
 
 // 이벤트
 document.addEventListener("keydown", (e) => {
-    console.log(e.keyCode);
+    // console.log(e.keyCode);
     switch (e.keyCode) {
         case 37: //왼쪽
             moveBlock("left", -1);
