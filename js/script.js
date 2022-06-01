@@ -1,6 +1,8 @@
 import BLOCKS from "./blocks.js";
 const playground = document.querySelector(".playground > ul");
 const gameText = document.querySelector(".gameText");
+const socreDisplay = document.querySelector(".score");
+const reTryBtn = document.querySelector(".reTryBtn");
 const GAME_ROWS = 20;
 const GAME_COLS = 10;
 
@@ -11,7 +13,7 @@ let downInterval;
 let tempMovingItem;
 
 const movingItem = {
-    type: "tree",
+    type: "",
     direction: 0,
     top: 0,
     left: 3,
@@ -25,8 +27,8 @@ function init() {
     for (let i = 0; i < GAME_ROWS; i++) {
         prependNewLine();
     }
-    renderBlocks();
-    //generateNewBlock();
+    //renderBlocks();
+    generateNewBlock();
 }
 
 function prependNewLine() {
@@ -89,6 +91,8 @@ function renderBlocks(moveType = "") {
         } else {
             tempMovingItem = { ...movingItem };
             if (moveType == "reTry") {
+                //console.log("gameOverShow");
+                clearInterval(downInterval);
                 gameOverShow();
                 return false;
             }
@@ -110,7 +114,6 @@ function renderBlocks(moveType = "") {
 
 // 게임오버
 function gameOverShow() {
-    clearInterval(downInterval);
     gameText.style.display = "flex";
 }
 
@@ -138,11 +141,15 @@ function checkMatch() {
                 matched = false;
             }
         });
-        // seized가 전부 있다면 라인 지우기
+        // seized 가 전부 있다면 라인 지우기
         // 새로운 라인 생성
         if (matched) {
             child.remove();
             prependNewLine();
+
+            //점수 증가
+            score++;
+            socreDisplay.innerText = score;
         }
     });
 
@@ -150,10 +157,10 @@ function checkMatch() {
 }
 
 function generateNewBlock() {
-    // clearInterval(downInterval);
-    // downInterval = setInterval(() => {
-    //     moveBlock("top", 1);
-    // }, duration);
+    clearInterval(downInterval);
+    downInterval = setInterval(() => {
+        moveBlock("top", 1);
+    }, duration);
 
     let blockArray = Object.entries(BLOCKS);
     let rand_type = Math.floor(Math.random() * blockArray.length);
@@ -225,4 +232,11 @@ document.addEventListener("keydown", (e) => {
         default:
             break;
     }
+});
+
+reTryBtn.addEventListener("click", () => {
+    playground.innerHTML = "";
+    gameText.style.display = "none";
+    socreDisplay.innerText = 0;
+    init();
 });
